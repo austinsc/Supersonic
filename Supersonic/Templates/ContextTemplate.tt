@@ -1,0 +1,75 @@
+﻿<#@ template language="C#" debug="true" visibility="internal" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+#region Database Context
+[ExcludeFromCodeCoverage]
+public partial class <#=_className#> : DbContext, <#=_interfaceName#>
+{
+#region Tables
+<#	foreach(var tbl in _tables.Where(t => !t.IsMapping && !t.IsEnum).OrderBy(x => x.ClassName)) { #>
+    public IDbSet<<#=tbl.ClassName #>> <#=tbl.ClassCollectionName #> { get; set; } // <#=tbl.SqlName #>
+<#  } #>
+#endregion //Tables
+
+	// Static constructor
+    static <#=_className#>()
+    {
+        Database.SetInitializer<<#=_className#>>(null);
+    }
+
+	// Default constructor
+    public <#=_className#>()
+        : base("Name=<#=_connectionStringName#>")
+    {
+        InitializePartial();
+    }
+
+	// Connection string constructor
+    public <#=_className#>(string connectionString)
+		: base(connectionString)
+    {
+		InitializePartial();
+    }
+
+	// Extended constructor
+    public <#=_className#>(string connectionString, System.Data.Entity.Infrastructure.DbCompiledModel model)
+		: base(connectionString, model)
+    {
+        InitializePartial();
+    }
+
+#region OnModelCreating
+    protected override void OnModelCreating(DbModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+<#	foreach(var tbl in _tables.Where(t => !t.IsMapping && !t.IsEnum).OrderBy(x => x.ClassName)) { #>
+        modelBuilder.Configurations.Add(new <#=tbl.ClassName + _configurationSuffix #>());
+<#	} #>
+		OnModelCreatingPartial(modelBuilder);
+    }
+#endregion //OnModelCreating
+#region CreateModel
+    public static DbModelBuilder CreateModel(DbModelBuilder modelBuilder, string schema)
+    {
+<#	foreach(var tbl in _tables.Where(t => !t.IsMapping && !t.IsEnum).OrderBy(x => x.ClassName)) { #>
+        modelBuilder.Configurations.Add(new <#=tbl.ClassName + _configurationSuffix #>(schema));
+<#	} #>
+        return modelBuilder;
+    }
+#endregion //CreateModel
+
+	partial void InitializePartial();
+	partial void OnModelCreatingPartial(DbModelBuilder modelBuilder);
+
+#region StoredProcedures
+	<#=this.RenderStoredProcedureContainers()#>
+#endregion //StoredProcedures
+}
+#endregion //Context

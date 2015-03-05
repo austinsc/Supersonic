@@ -1,0 +1,19 @@
+﻿<#@ template language="C#" debug="true" visibility="internal" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+#region Unit of Work
+public interface <#=this._interfaceName#> : IDisposable
+{
+	// Tables
+<#	foreach(var tbl in this._tables.Where(t => !t.IsMapping && !t.IsEnum).OrderBy(x => x.ClassName)) { #>
+	IDbSet<<#=tbl.ClassName #>> <#=tbl.ClassCollectionName #> { get; set; } // <#=tbl.SqlName #>
+<#	} #>
+	int SaveChanges();
+}
+#endregion //UnitOfWork

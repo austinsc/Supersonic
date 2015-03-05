@@ -1,0 +1,50 @@
+﻿<#@ template language="C#" debug="true" visibility="internal" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+public class TestData
+{
+	// Generated From: <#=_databaseName#> (<#=_connectionString#>)
+	// Original Query: <#=_commandText#>
+	public readonly HashDbSet<<#=_table.ClassName#>> <#=_table.ClassCollectionName#> = new HashDbSet<<#=_table.ClassName#>>(new[]
+	{
+<#	foreach(var record in this._records) {#>
+		new <#=_table.ClassName#> { <#=_table.CreateObjectInitializer(record)#> },
+<#	}#>
+	});
+
+    public TestData()
+    {
+        this.LinkData();
+    }
+
+    private void LinkData()
+    {
+        
+    }
+
+    public static void Initialize()
+    {
+        // Create the data set
+        var data = new TestData();		      
+
+        // Define the context constructors
+        Shim<#=_databaseName#>Context.Constructor = @this =>
+        {
+            var shim = new Shim<#=_databaseName#>Context(@this)
+            {
+                <#=_table.ClassCollectionName#>Get = () => data.<#=_table.ClassCollectionName#>
+            };
+            var baseShim = new ShimDbContext(shim)
+            {
+                Dispose = () => { },
+                SaveChanges = () => data.LinkData(),
+            };
+        };
+    }
+}

@@ -1,0 +1,74 @@
+﻿<#@ template language="C#" debug="true" visibility="internal" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+// This file was automatically generated.
+// Do not make changes directly to this file - edit the template instead.");
+// 
+// The following connection settings were used to generate this file");
+//   Connection String Name: <#=this._options.ConnectionStringName#>
+//   Connection String:      <#=Utilities.ScrubPassword(this._options.ConnectionString)#>
+//
+// ReSharper disable RedundantUsingDirective
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
+// ReSharper disable InconsistentNaming
+// ReSharper disable PartialTypeWithSinglePart
+// ReSharper disable PartialMethodWithSinglePart
+// ReSharper disable RedundantNameQualifier
+#pragma warning disable 1591 // Generated classes are not documented
+
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
+<#	if(_options.ElementsToGenerate.HasFlag(Elements.Context)) { #>
+using System.ComponentModel.DataAnnotations.Schema;
+<#	} #>
+<#	if(_options.ElementsToGenerate.HasFlag(Elements.Context) || _options.ElementsToGenerate.HasFlag(Elements.UnitOfWork)) { #>
+using System.Data;
+using System.Dynamic;
+using System.Data.Common;
+using System.Data.Entity;
+using System.Data.SqlClient;
+<#	} #>
+<#	if(_options.ElementsToGenerate.HasFlag(Elements.PocoConfiguration)) { #>
+using System.Data.Entity.ModelConfiguration;
+<# } #>
+using System.Runtime.Serialization;
+<#	if((_options.ElementsToGenerate.HasFlag(Elements.PocoConfiguration) 
+		|| _options.ElementsToGenerate.HasFlag(Elements.Context) 
+	    || _options.ElementsToGenerate.HasFlag(Elements.UnitOfWork)) 
+		&& (!_options.ElementsToGenerate.HasFlag(Elements.Poco) && !string.IsNullOrWhiteSpace(_options.PocoNamespace))) { #>
+using <#=_options.PocoNamespace #>;
+<# } #>
+<#	if(_options.ElementsToGenerate.HasFlag(Elements.PocoConfiguration) 
+		&& (!_options.ElementsToGenerate.HasFlag(Elements.Context) && !string.IsNullOrWhiteSpace(_options.ContextNamespace))) { #>
+using <#=_options.ContextNamespace #>;
+<# } #>
+<#	if(_options.ElementsToGenerate.HasFlag(Elements.Context) 
+		&& (!_options.ElementsToGenerate.HasFlag(Elements.UnitOfWork) 
+		&& !string.IsNullOrWhiteSpace(_options.UnitOfWorkNamespace))) { #>
+using <#=_options.UnitOfWorkNamespace #>;
+<# } #>
+<#	if(_options.ElementsToGenerate.HasFlag(Elements.Context) 
+		&& (!_options.ElementsToGenerate.HasFlag(Elements.PocoConfiguration) && !string.IsNullOrWhiteSpace(_options.ConfigurationNamespace))) { #>
+using <#=_options.ConfigurationNamespace #>;
+<# } #>
+<#	if(_options.ElementsToGenerate.HasFlag(Elements.PocoConfiguration)) { #>
+using DatabaseGeneratedOption = System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption;
+<# } #>
+<#	if(!string.IsNullOrEmpty(_options.CollectionTypeNamespace)) { #>
+using <#=_options.CollectionTypeNamespace #>;
+<# } #>
+
+namespace <#=_options.Namespace #>
+{
+<#	this.PushIndent(INDENT);#>	
+<#= _sourceCode #>
+<#	this.PopIndent();#>
+}
+#pragma warning restore 1591

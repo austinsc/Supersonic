@@ -1,0 +1,40 @@
+﻿<#@ template language="C#" debug="true" visibility="internal" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+// <#=_table.IsView ? "View: " : "Table: " + _table.SqlName #>
+public partial class <#=_table.ClassName #>
+{
+	// Columns
+<#	foreach(var col in _table.Columns.Where(x => !x.IsForeignKeyEnum).OrderBy(x => x.Ordinal)) { #>
+	<#=col.Entity #>
+<#	} #>
+	// Reverse navigation
+<#	foreach(var nav in _table.ReverseNavigationProperty) { #>
+	<#=nav #>
+<#	} #>
+	// Entity foreign key
+<#	foreach(var col in _table.Columns.Where(x => x.EntityFk != null).OrderBy(x => x.Ordinal)) { #>
+	<#=col.EntityFk #>
+<#	} #>
+
+<#	if(_table.Columns.Where(c => c.Default != string.Empty).Any() || _table.ReverseNavigationCtor.Any()) { #>
+	public <#=_table.ClassName #>()
+	{
+<#		foreach(var col in _table.Columns.Where(c => !string.IsNullOrEmpty(c.Default) && !c.IsForeignKeyEnum).OrderBy(x => x.Ordinal)) { #>
+		<#=col.PropertyNameHumanCase #> = <#=col.Default #>;
+<#		} #>
+<#		foreach(var nav in _table.ReverseNavigationCtor) { #>
+		<#=nav #>
+<#		} #>
+		InitializePartial();
+	}
+<#  } #>
+
+	partial void InitializePartial();
+}

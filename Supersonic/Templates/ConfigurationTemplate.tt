@@ -1,0 +1,35 @@
+﻿<#@ template language="C#" debug="true" visibility="internal" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+// <#=_table.SqlName #>
+[ExcludeFromCodeCoverage]
+internal partial class <#=_table.ClassName + _configurationSuffix#> : EntityTypeConfiguration<<#=_table.ClassName #>>
+{
+	public <#=_table.ClassName + _configurationSuffix#>(string schema = "<#=_table.Schema #>")
+	{
+		ToTable(schema + ".<#=_table.SqlName #>");
+		HasKey(<#=_table.PrimaryKeyNameHumanCase() #>);
+
+		// Column configuration
+<#	foreach(var col in _table.Columns.Where(x => !x.IsForeignKey).OrderBy(x => x.Ordinal)) { #>
+		<#=col.PropertyConfiguration #>
+<#	} #>
+		// Foreign key configuration
+<#	foreach(var col in _table.Columns.Where(x => x.ForeignKeyConfiguration != null).OrderBy(x => x.Ordinal)) { #>
+		<#=col.ForeignKeyConfiguration #>
+<#	} #>
+		// Table mapping configuration
+<#	foreach (var map in _table.MappingConfiguration) { #>
+		<#=map #>
+<#	} #>
+		InitializePartial();
+	}
+
+	partial void InitializePartial();
+}

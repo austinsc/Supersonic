@@ -1,0 +1,27 @@
+﻿<#@ template language="C#" debug="true" visibility="public" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<# foreach (var ep in this._extps) {#>
+BEGIN
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[<#= ep.ObjectSchema #>].[<#= ep.ObjectName #>]'))
+	IF ((SELECT COUNT(*) FROM sys.fn_listextendedproperty(NULL, 'SCHEMA', '<#= ep.ObjectSchema #>', '<#= ep.ObjectType #>', '<#= ep.ObjectName #>', NULL, NULL) WHERE name = '<#= ep.Name #>') = 1)
+		EXEC sys.sp_dropextendedproperty @name=N'<#= ep.Name #>', @level0type=N'SCHEMA', @level0name=N'<#= ep.ObjectSchema #>', @level1type=N'<#= ep.ObjectType #>',@level1name=N'<#= ep.ObjectName #>' 
+END
+<#}#>
+
+<# foreach (var ep in this._extps) {#>
+BEGIN
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[<#= ep.ObjectSchema #>].[<#= ep.ObjectName #>]'))
+	IF ((SELECT COUNT(*) FROM sys.fn_listextendedproperty(NULL, 'SCHEMA', '<#= ep.ObjectSchema #>', '<#= ep.ObjectType #>', '<#= ep.ObjectName #>', NULL, NULL) WHERE name = '<#= ep.Name #>') = 1)
+		EXEC sys.sp_updateextendedproperty @name=N'<#= ep.Name #>', @value=N'<#= ep.Value #>' , @level0type=N'SCHEMA', @level0name=N'<#= ep.ObjectSchema #>', @level1type=N'<#= ep.ObjectType #>', @level1name=N'<#= ep.ObjectName #>' 
+	ELSE 
+		EXEC sys.sp_addextendedproperty @name=N'<#= ep.Name #>', @value=N'<#= ep.Value #>' , @level0type=N'SCHEMA', @level0name=N'<#= ep.ObjectSchema #>', @level1type=N'<#= ep.ObjectType #>', @level1name=N'<#= ep.ObjectName #>'
+END
+<#}#>

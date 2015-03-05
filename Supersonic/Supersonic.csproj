@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{04483885-9CE6-4A80-9424-6645544F54B2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Supersonic</RootNamespace>
+    <AssemblyName>Supersonic</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Supersonic.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MSSQL\ForeignKeySchema.sql" />
+    <Compile Include="Column.cs" />
+    <Compile Include="ConfigTransform.cs" />
+    <Compile Include="ExtendedProperty.cs" />
+    <Compile Include="IDatabaseMember.cs" />
+    <Compile Include="IDatabaseObject.cs" />
+    <Compile Include="Elements.cs" />
+    <Compile Include="ExecutionMode.cs" />
+    <Compile Include="ForeignKey.cs" />
+    <Compile Include="Generator.cs" />
+    <Compile Include="GeneratorOptions.cs" />
+    <Compile Include="GeneratorOutput.cs" />
+    <Compile Include="Inflector.cs" />
+    <Compile Include="Parameter.cs" />
+    <Compile Include="Relationship.cs" />
+    <Compile Include="MSSQL\SqlScripts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SqlScripts.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerSchemaReader.cs" />
+    <Compile Include="ExtendedPropertyUtilities.cs" />
+    <Compile Include="StoredProcedure.cs" />
+    <Compile Include="Table.cs" />
+    <Compile Include="Templates\CompleteTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompleteTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\ConfigurationTemplate.cs">
+      <DependentUpon>ConfigurationTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\ContextTemplate.cs">
+      <DependentUpon>ContextTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\ExtendedPropertyTemplate.cs">
+      <DependentUpon>ExtendedPropertyTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\TestDataTemplate.cs">
+      <DependentUpon>TestDataTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\EnumTemplate.cs">
+      <DependentUpon>EnumTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\Extensions.cs" />
+    <Compile Include="Templates\PocoTemplate.cs">
+      <DependentUpon>PocoTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\StoredProcedureContainerTemplate.cs">
+      <DependentUpon>StoredProcedureContainerTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\StoredProcedureTemplate.cs">
+      <DependentUpon>StoredProcedureTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\Templates.cs" />
+    <Compile Include="Templates\UnitOfWorkTemplate.cs">
+      <DependentUpon>UnitOfWorkTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Utilities.cs" />
+    <Compile Include="MSBuild\Tasks\SchemaUpdate.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MSSQL\ExtendedProperties_InsertUpdate.sql" />
+    <Content Include="MSSQL\ExtendedProperties_StoredProcedures.sql" />
+    <Content Include="MSSQL\ExtendedProperties_Enums.sql" />
+    <EmbeddedResource Include="MSSQL\StoredProcedureSchema.sql" />
+    <EmbeddedResource Include="MSSQL\TableSchema.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Templates\ConfigurationTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ConfigurationTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\ContextTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ContextTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\EnumTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>EnumTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\PocoTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PocoTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\StoredProcedureContainerTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>StoredProcedureContainerTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\StoredProcedureTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>StoredProcedureTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\UnitOfWorkTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>UnitOfWorkTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\TestDataTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TestDataTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\ExtendedPropertyTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ExtendedPropertyTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\CompleteTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CompleteTemplate.cs</LastGenOutput>
+    </Content>
+    <None Include="packages.config" />
+    <None Include="Supersonic.MSBuild.Tasks.targets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MSSQL\SqlScripts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SqlScripts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <BinFiles Include="$(TargetDir)\**\*.*">
+      <Visible>false</Visible>
+    </BinFiles>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IBMDB2\" />
+  </ItemGroup>
+  <!--<Target Name="AfterBuild">
+    <Message Text="Copying output to .build" />
+    <Copy SourceFiles="@(BinFiles)" DestinationFiles="@(BinFiles->'$(SolutionDir)\.build\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SolutionDir)\.build\" />
+    <Copy SourceFiles="Supersonic.MSBuild.Tasks.targets" DestinationFolder="$(SolutionDir)\.build\" />
+  </Target>-->
+</Project>
